@@ -1,0 +1,336 @@
+               
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Drainage Monitoring System</title>
+
+    <!-- CSS File -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+            <i class="fa-solid fa-water"></i>
+            Smart Drainage System
+        </div>
+
+        <div class="header-right">
+            <span class="system-status">
+                <i class="fa-solid fa-circle"></i>
+                System Online
+            </span>
+        </div>
+    </header>
+
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <h3>MAIN MENU</h3>
+
+        <nav>
+            <a href="#dashboard">
+                <i class="fa-solid fa-gauge"></i>
+                Dashboard
+            </a>
+
+            <a href="#sensors">
+                <i class="fa-solid fa-microchip"></i>
+                Sensors
+            </a>
+
+            <a href="#map">
+                <i class="fa-solid fa-map"></i>
+                Drainage Map
+            </a>
+
+            <a href="#alerts">
+                <i class="fa-solid fa-bell"></i>
+                Alerts
+            </a>
+
+            <a href="#grievance">
+                <i class="fa-solid fa-file-circle-exclamation"></i>
+                Public Grievance
+            </a>
+        </nav>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+
+        <!-- DASHBOARD SECTION -->
+        <section id="dashboard" class="section">
+
+            <div class="section-header">
+                <h1>Dashboard Overview</h1>
+                <p>Monitor drainage conditions and water levels.</p>
+            </div>
+
+
+            <!-- SUMMARY CARDS -->
+            <div class="dashboard-cards">
+
+                <div class="card">
+                    <i class="fa-solid fa-microchip"></i>
+                    <h3>Total Sensors</h3>
+                    <h2 id="totalSensors">04</h2>
+                    <p>Installed sensors</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-water"></i>
+                    <h3>Water Level</h3>
+                    <h2 id="waterLevel">-- cm</h2>
+                    <p>Current water level</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <h3>Active Alerts</h3>
+                    <h2 id="activeAlerts">00</h2>
+                    <p>Warnings detected</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <h3>Normal Status</h3>
+                    <h2 id="normalSensors">04</h2>
+                    <p>Sensors operating normally</p>
+                </div>
+
+            </div>
+
+
+            <!-- WATER LEVEL MONITORING -->
+            <div class="content-box">
+
+                <h2>
+                    <i class="fa-solid fa-chart-line"></i>
+                    Water Level Monitoring
+                </h2>
+
+                <div class="water-level">
+                    <h3>Current Water Level</h3>
+                    <h1 id="currentWaterLevel">-- cm</h1>
+                    <p id="waterStatus">Waiting for sensor data</p>
+                </div>
+
+                <p class="note">
+                    Water level readings will be received from the
+                    ultrasonic sensor connected to ESP32.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- SENSOR SECTION -->
+        <section id="sensors" class="section">
+
+            <div class="section-header">
+                <h1>
+                    <i class="fa-solid fa-microchip"></i>
+                    Sensor Monitoring
+                </h1>
+
+                <p>Monitor connected drainage sensors.</p>
+            </div>
+
+            <div class="content-box">
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Sensor ID</th>
+                                <th>Location</th>
+                                <th>Water Level</th>
+                                <th>Flow Rate</th>
+                                <th>Status</th>
+                                <th>Last Ping</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="sensorTableBody">
+                            <!-- Sensor data will be added using JavaScript -->
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- DRAINAGE MAP SECTION -->
+        <section id="map" class="section">
+
+            <div class="section-header">
+
+                <h1>
+                    <i class="fa-solid fa-map-location-dot"></i>
+                    Drainage Map
+                </h1>
+
+                <p>View drainage monitoring locations.</p>
+
+            </div>
+
+            <div class="content-box">
+
+                <div class="map-legend">
+
+                    <span>🟢 Normal</span>
+                    <span>🟠 Warning</span>
+                    <span>🔴 Critical</span>
+
+                </div>
+
+                <div id="drainageMap" class="map-container">
+
+                    <p>
+                        <i class="fa-solid fa-map"></i>
+                        Drainage map will be displayed here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ALERTS SECTION -->
+        <section id="alerts" class="section">
+
+            <div class="section-header">
+
+                <h1>
+                    <i class="fa-solid fa-bell"></i>
+                    Alerts & Notifications
+                </h1>
+
+            </div>
+
+            <div id="alertsContainer" class="content-box">
+
+                <p>No alerts available currently.</p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- PUBLIC GRIEVANCE SECTION -->
+        <section id="grievance" class="section">
+
+            <div class="section-header">
+
+                <h1>
+                    <i class="fa-solid fa-file-circle-exclamation"></i>
+                    Public Grievance Portal
+                </h1>
+
+                <p>Report drainage-related problems in your area.</p>
+
+            </div>
+
+
+            <div class="content-box">
+
+                <form id="grievanceForm">
+
+                    <label for="citizenName">Your Name</label>
+                    <input type="text" id="citizenName"
+                        placeholder="Enter your name" required>
+
+
+                    <label for="citizenEmail">Email Address</label>
+                    <input type="email" id="citizenEmail"
+                        placeholder="Enter your email" required>
+
+
+                    <label for="problemType">Problem Type</label>
+
+                    <select id="problemType" required>
+
+                        <option value="">Select a problem</option>
+                        <option value="Blocked Drain">Blocked Drain</option>
+                        <option value="Water Overflow">Water Overflow</option>
+                        <option value="Water Stagnation">Water Stagnation</option>
+                        <option value="Waste Dumping">Waste Dumping</option>
+                        <option value="Other">Other</option>
+
+                    </select>
+
+
+                    <label for="location">Problem Location</label>
+                    <input type="text" id="location"
+                        placeholder="Enter your area or location" required>
+
+
+                    <label for="description">Problem Description</label>
+                    <textarea id="description"
+                        placeholder="Describe the problem..."
+                        rows="5" required></textarea>
+
+
+                    <button type="submit" class="submit-btn">
+                        Submit Complaint
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+        <p>
+            © 2026 Smart Drainage Monitoring System.
+            All Rights Reserved.
+        </p>
+
+        <p>IoT-Based Drainage Monitoring & Public Grievance Platform</p>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT FILES -->
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>

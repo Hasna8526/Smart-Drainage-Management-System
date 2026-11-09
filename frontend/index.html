@@ -297,7 +297,17 @@
                     <textarea id="description"
                         placeholder="Describe the problem..."
                         rows="5" required></textarea>
+                    <!-- Upload Problem Photo -->
+                    <label> for="problemPhoto">Upload Problem Photo</label>
+                    <input type="file"
+                     id="problemPhoto"
+                     accept="image/png, image/jpeg"
+                     required>
 
+                    <!-- Photo Preview -->
+                    <img id="photoPreview"
+                          alt="Problem Photo Preview"
+                          style="display: none; width: 200px;">
 
                     <button type="submit" class="submit-btn">
                         Submit Complaint

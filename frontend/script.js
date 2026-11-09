@@ -206,3 +206,18 @@ updateDashboard();
 displayAlerts();
 
 console.log("Smart Drainage Dashboard Loaded Successfully!");
+// Public Grievance - Photo Preview
+
+const problemPhoto = document.getElementById("problemPhoto");
+const photoPreview = document.getElementById("photoPreview");
+
+problemPhoto.addEventListener("change", function () {
+
+    const file = problemPhoto.files[0];
+
+    if (file) {
+        photoPreview.src = URL.createObjectURL(file);
+        photoPreview.style.display = "block";
+    }
+
+});

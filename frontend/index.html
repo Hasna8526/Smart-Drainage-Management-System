@@ -88,16 +88,16 @@
                 <div class="card">
                     <i class="fa-solid fa-microchip"></i>
                     <h3>Total Sensors</h3>
-                    <h2 id="totalSensors">04</h2>
+                    <h2 id="totalSensors">3</h2>
                     <p>Installed sensors</p>
                 </div>
 
-                <div class="card">
-                    <i class="fa-solid fa-water"></i>
-                    <h3>Water Level</h3>
-                    <h2 id="waterLevel">-- cm</h2>
-                    <p>Current water level</p>
-                </div>
+              <div class="card">
+                  <i class="fa-solid fa-wave-square"></i>
+                  <h3>Monitoring Points</h3>
+                  <h2>3</h2>
+                  <p>Ultrasonic sensor positions</p>
+              </div>
 
                 <div class="card">
                     <i class="fa-solid fa-triangle-exclamation"></i>
@@ -109,34 +109,93 @@
                 <div class="card">
                     <i class="fa-solid fa-circle-check"></i>
                     <h3>Normal Status</h3>
-                    <h2 id="normalSensors">04</h2>
+                    <h2 id="normalSensors">0</h2>
                     <p>Sensors operating normally</p>
                 </div>
 
             </div>
 
 
-            <!-- WATER LEVEL MONITORING -->
-            <div class="content-box">
+           <!-- THREE SENSOR MONITORING -->
+           <div class="content-box">
 
-                <h2>
-                    <i class="fa-solid fa-chart-line"></i>
-                    Water Level Monitoring
-                </h2>
+             <h2>
+               <i class="fa-solid fa-chart-line"></i>
+               Three Sensor Monitoring
+             </h2>
+    <!-- DRAINAGE PIPE VISUALIZATION -->
+     <div class="sensor-test-buttons">
 
-                <div class="water-level">
-                    <h3>Current Water Level</h3>
-                    <h1 id="currentWaterLevel">-- cm</h1>
-                    <p id="waterStatus">Waiting for sensor data</p>
-                </div>
+    <button onclick="testSensor(1, 75, 'Critical')">
+        Test S1
+    </button>
 
-                <p class="note">
-                    Water level readings will be received from the
-                    ultrasonic sensor connected to ESP32.
-                </p>
+    <button onclick="testSensor(2, 75, 'Critical')">
+        Test S2
+    </button>
 
+    <button onclick="testSensor(3, 75, 'Critical')">
+        Test S3
+    </button>
+
+</div>
+            <div class="pipe-section">
+             <h3>Drainage Pipe Water Monitoring</h3>
+
+          <div class="drainage-pipe" id="drainagePipe">
+          <div class="pipe-water" id="pipeWater"></div>
+
+           <div class="pipe-sensor sensor-one">S1</div>
+           <div class="pipe-sensor sensor-two">S2</div>
+           <div class="pipe-sensor sensor-three">S3</div>
+         </div>
+
+         <p id="pipeStatus">Water Level: Normal</p>
+      </div>
+
+     <div class="sensor-grid">
+
+        <!-- SENSOR 1 -->
+        <div class="sensor-card">
+            <h3>Ultrasonic Sensor 1</h3>
+            <h1 id="sensor1Distance">-- cm</h1>
+            <p>Inlet Position</p>
+            <div class="sensor-indicator">
+                <span id="sensor1Status" class="status-indicator status-waiting"></span>
+                <span id="sensor1Text">Waiting for data</span>
             </div>
+        </div>
 
+        <!-- SENSOR 2 -->
+        <div class="sensor-card">
+            <h3>Ultrasonic Sensor 2</h3>
+            <h1 id="sensor2Distance">-- cm</h1>
+            <p>Middle Position</p>
+            <div class="sensor-indicator">
+                <span id="sensor2Status" class="status-indicator status-waiting"></span>
+                <span id="sensor2Text">Waiting for data</span>
+            </div>
+        </div>
+
+        <!-- SENSOR 3 -->
+        <div class="sensor-card">
+            <h3>Ultrasonic Sensor 3</h3>
+            <h1 id="sensor3Distance">-- cm</h1>
+            <p>Outlet Position</p>
+            <div class="sensor-indicator">
+                <span id="sensor3Status" class="status-indicator status-waiting"></span>
+                <span id="sensor3Text">Waiting for data</span>
+            </div>
+        </div>
+
+    </div>
+
+    <p class="note">
+        Three ultrasonic sensors monitor water distance
+        at different positions inside the drainage model.
+    </p>
+
+</div>
         </section>
 
 
@@ -342,6 +401,6 @@
 
     <!-- JAVASCRIPT FILES -->
     
- <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

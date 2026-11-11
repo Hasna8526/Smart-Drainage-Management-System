@@ -10,7 +10,7 @@
 const sensors = [
     {
         id: "S001",
-        location: "Main Road",
+        location: "Inlet Position",
         waterLevel: 12,
         flowRate: 20,
         status: "Normal",
@@ -18,7 +18,7 @@ const sensors = [
     },
     {
         id: "S002",
-        location: "Market Area",
+        location: "Middle Position",
         waterLevel: 35,
         flowRate: 15,
         status: "Warning",
@@ -26,21 +26,36 @@ const sensors = [
     },
     {
         id: "S003",
-        location: "Bus Stand",
+        location: "Outlet Position",
         waterLevel: 65,
         flowRate: 5,
         status: "Critical",
         lastPing: "Just now"
-    },
-    {
-        id: "S004",
-        location: "College Road",
-        waterLevel: 18,
-        flowRate: 22,
-        status: "Normal",
-        lastPing: "Just now"
     }
 ];
+function updateSensorCards() {
+    sensors.forEach((sensor, index) => {
+        const number = index + 1;
+
+        document.getElementById(`sensor${number}Distance`).textContent =
+            sensor.waterLevel + " cm";
+
+        document.getElementById(`sensor${number}Text`).textContent =
+            sensor.status;
+
+        const indicator = document.getElementById(`sensor${number}Status`);
+
+        indicator.className = "status-indicator";
+
+        if (sensor.status === "Normal") {
+            indicator.style.backgroundColor = "green";
+        } else if (sensor.status === "Warning") {
+            indicator.style.backgroundColor = "orange";
+        } else {
+            indicator.style.backgroundColor = "red";
+        }
+    });
+}
 
 
 // 2. DISPLAY SENSOR TABLE
@@ -75,45 +90,73 @@ function displaySensors() {
 
 // 3. UPDATE DASHBOARD CARDS
 
-function updateDashboard() {
 
-    const totalSensors = sensors.length;
+function updateDashboardSensors() {
 
-    const normalSensors = sensors.filter(
-        sensor => sensor.status === "Normal"
-    ).length;
+    const pipeClasses = [
+        "sensor-one",
+        "sensor-two",
+        "sensor-three"
+    ];
 
-    const activeAlerts = sensors.filter(
-        sensor => sensor.status !== "Normal"
-    ).length;
+    sensors.forEach((sensor, index) => {
 
-    const maximumLevel = Math.max(
-        ...sensors.map(sensor => sensor.waterLevel)
-    );
+        const number = index + 1;
 
-    document.getElementById("totalSensors").textContent = totalSensors;
+        const distance = document.getElementById(
+            `sensor${number}Distance`
+        );
 
-    document.getElementById("normalSensors").textContent = normalSensors;
+        const statusText = document.getElementById(
+            `sensor${number}Text`
+        );
 
-    document.getElementById("activeAlerts").textContent = activeAlerts;
+        const indicator = document.getElementById(
+            `sensor${number}Status`
+        );
 
-    document.getElementById("waterLevel").textContent = maximumLevel + " cm";
+        const color =
+            sensor.status === "Critical" ? "red" :
+            sensor.status === "Warning" ? "orange" :
+            "green";
 
-    document.getElementById("currentWaterLevel").textContent =
-        maximumLevel + " cm";
+        if (distance) {
+            distance.textContent = sensor.waterLevel + " cm";
+        }
 
-    let waterStatus = "Normal";
+        if (statusText) {
+            statusText.textContent = sensor.status;
+        }
 
-    if (maximumLevel >= 60) {
-        waterStatus = "Critical - Overflow Risk!";
-    } else if (maximumLevel >= 30) {
-        waterStatus = "Warning - Water Level Rising";
-    }
+        if (indicator) {
+            indicator.style.backgroundColor = color;
+        }
 
-    document.getElementById("waterStatus").textContent = waterStatus;
+        const pipeSensor = document.querySelector(
+            "." + pipeClasses[index]
+        );
 
+        if (pipeSensor) {
+            pipeSensor.style.backgroundColor = color;
+            pipeSensor.style.color = "white";
+        }
+    });
 }
+function testSensor(number, level, status) {
 
+    sensors[number - 1].waterLevel = level;
+    sensors[number - 1].status = status;
+
+    // Refresh all dashboard sections
+    updateSensorCards();
+    displaySensors();
+    updateDashboard();
+    displayAlerts();
+    updateDashboardSensors();
+    updateDrainagePipe();
+
+    console.log("Sensor " + number + " tested!");
+}
 
 // 4. DISPLAY ALERTS
 
@@ -195,36 +238,11 @@ if (grievanceForm) {
     });
 
 }
-
-
-// 6. START DASHBOARD
-
+// Initial dashboard display
 displaySensors();
-
 updateDashboard();
-
 displayAlerts();
+updateDashboardSensors();
+updateDrainagePipe();
 
-console.log("Smart Drainage Dashboard Loaded Successfully!");
-// Public Grievance - Photo Preview
-
-const problemPhoto = document.getElementById("problemPhoto");
-const photoPreview = document.getElementById("photoPreview");
-
-problemPhoto.addEventListener("change", function () {
-
-    const file = problemPhoto.files[0];
-
-    if (file) {
-        photoPreview.src = URL.createObjectURL(file);
-        photoPreview.style.display = "block";
-    }
-
-});
-const removePhoto = document.getElementById("removePhoto");
-
-removePhoto.addEventListener("click", function () {
-    problemPhoto.value = "";
-    photoPreview.src = "";
-    photoPreview.style.display = "none";
-});
+console.log("Dashboard loaded!");

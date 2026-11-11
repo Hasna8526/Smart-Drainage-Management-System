@@ -357,3 +357,111 @@ form textarea:focus {
 #removePhoto:hover {
     background-color: #b02a37;
 }
+/* THREE SENSOR HORIZONTAL DRAINAGE PIPE */
+
+.drainage-visual {
+    background: #f4f8fb;
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+.pipe-container {
+    position: relative;
+    margin: 65px 20px 35px;
+    height: 110px;
+    border: 6px solid #64748b;
+    border-radius: 15px;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+/* DRAINAGE PIPE */
+
+.drainage-pipe {
+    position: relative;
+    height: 100px;
+    margin-top: 75px;
+    overflow: visible !important;
+    background: #333;
+    border: 4px solid #777;
+    border-radius: 15px;
+}
+/* WATER INSIDE PIPE */
+
+.pipe-water {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20%;
+    background: #0284c7;
+    transition: height 0.5s ease;
+}
+
+/* THREE SENSORS */
+
+.pipe-sensor {
+    position: absolute;
+    top: -60px;
+    z-index: 999;
+    width: 48px;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+
+    color: white !important;
+    border: 3px solid white !important;
+
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+.sensor-one {
+    left: 10%;
+    background-color: green !important;
+}
+
+.sensor-two {
+    left: 45%;
+    background-color: orange !important;
+}
+
+.sensor-three {
+    right: 10%;
+    background-color: red !important;
+}
+
+/* SENSOR STATUS COLOURS */
+
+.pipe-sensor.normal {
+    background: green !important;
+    border: 2px solid darkgreen;
+}
+
+.pipe-sensor.warning {
+    background: orange !important;
+    border: 2px solid darkorange;
+}
+
+.pipe-sensor.high {
+    background: red !important;
+    border: 2px solid darkred;
+    box-shadow: 0 0 12px red;
+}
+
+/* WATER STATUS */
+
+#pipeStatus {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 20px;
+}
+.pipe-section {
+    overflow: visible !important;
+}

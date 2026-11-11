@@ -343,3 +343,17 @@ form textarea:focus {
         font-size: 16px;
     }
 }
+#removePhoto {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+#removePhoto:hover {
+    background-color: #b02a37;
+}

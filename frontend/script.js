@@ -221,3 +221,10 @@ problemPhoto.addEventListener("change", function () {
     }
 
 });
+const removePhoto = document.getElementById("removePhoto");
+
+removePhoto.addEventListener("click", function () {
+    problemPhoto.value = "";
+    photoPreview.src = "";
+    photoPreview.style.display = "none";
+});

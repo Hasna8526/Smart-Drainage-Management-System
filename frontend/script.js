@@ -7,11 +7,14 @@
 
 // 1. SAMPLE SENSOR DATA
 
+
+// 1. SAMPLE SENSOR DATA
+
 const sensors = [
     {
         id: "S001",
         location: "Inlet Position",
-        waterLevel: 12,
+        waterLevel: 5,
         flowRate: 20,
         status: "Normal",
         lastPing: "Just now"
@@ -19,7 +22,7 @@ const sensors = [
     {
         id: "S002",
         location: "Middle Position",
-        waterLevel: 35,
+        waterLevel: 12,
         flowRate: 15,
         status: "Warning",
         lastPing: "Just now"
@@ -27,7 +30,7 @@ const sensors = [
     {
         id: "S003",
         location: "Outlet Position",
-        waterLevel: 65,
+        waterLevel: 20,
         flowRate: 5,
         status: "Critical",
         lastPing: "Just now"
@@ -142,21 +145,69 @@ function updateDashboardSensors() {
         }
     });
 }
-function testSensor(number, level, status) {
+function updatePipeStatus() {
+    const pipeStatus = document.getElementById("pipeStatus");
 
-    sensors[number - 1].waterLevel = level;
-    sensors[number - 1].status = status;
+    if (!pipeStatus) return;
 
-    // Refresh all dashboard sections
+    if (sensors.some(sensor => sensor.status === "Critical")) {
+        pipeStatus.textContent = "Water Level: Critical";
+    } else if (sensors.some(sensor => sensor.status === "Warning")) {
+        pipeStatus.textContent = "Water Level: Warning";
+    } else {
+        pipeStatus.textContent = "Water Level: Normal";
+    }
+}
+// DEMO MODE: Test all three sensors together
+
+function testScenario(condition) {
+
+    let levels = [];
+
+    if (condition === "Normal") {
+        levels = [5, 6, 7];
+    } 
+    else if (condition === "Warning") {
+        levels = [12, 13, 14];
+    } 
+    else if (condition === "Critical") {
+        levels = [20, 22, 25];
+    }
+
+    sensors.forEach((sensor, index) => {
+        sensor.waterLevel = levels[index];
+        sensor.status = condition;
+    });
+
     updateSensorCards();
     displaySensors();
-    updateDashboard();
     displayAlerts();
     updateDashboardSensors();
     updateDrainagePipe();
-
-    console.log("Sensor " + number + " tested!");
+    updatePipeStatus();
 }
+
+
+// RESET DEMO: Restore original readings
+
+function resetDemo() {
+
+    const originalLevels = [5, 12, 20];
+    const originalStatuses = ["Normal", "Warning", "Critical"];
+
+    sensors.forEach((sensor, index) => {
+        sensor.waterLevel = originalLevels[index];
+        sensor.status = originalStatuses[index];
+    });
+
+    updateSensorCards();
+    displaySensors();
+    displayAlerts();
+    updateDashboardSensors();
+    updateDrainagePipe();
+    updatePipeStatus();
+}
+
 
 // 4. DISPLAY ALERTS
 
@@ -238,11 +289,42 @@ if (grievanceForm) {
     });
 
 }
+
+// 6. UPDATE THREE PIPE WATER LEVELS
+
+function updateDrainagePipe() {
+
+    // Maximum demonstration water height inside the pipe
+    const maxPipeHeight = 30;
+
+    sensors.forEach((sensor, index) => {
+
+        const waterSection = document.getElementById(
+            `water${index + 1}`
+        );
+
+        if (!waterSection) return;
+
+        // Convert water height in cm into percentage
+        let percentage =
+            (sensor.waterLevel / maxPipeHeight) * 100;
+
+        // Keep the water inside the pipe
+        percentage = Math.max(0, Math.min(100, percentage));
+
+        // Update this sensor's water section
+        waterSection.style.height = percentage + "%";
+    });
+}
+
+
 // Initial dashboard display
 displaySensors();
-updateDashboard();
+
 displayAlerts();
 updateDashboardSensors();
 updateDrainagePipe();
+ updatePipeStatus() ;
+
 
 console.log("Dashboard loaded!");

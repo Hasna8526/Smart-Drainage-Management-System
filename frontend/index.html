@@ -123,32 +123,49 @@
                <i class="fa-solid fa-chart-line"></i>
                Three Sensor Monitoring
              </h2>
-    <!-- DRAINAGE PIPE VISUALIZATION -->
-     <div class="sensor-test-buttons">
+  
+<!-- DEMO MODE CONTROLS -->
+<div class="sensor-test-buttons">
 
-    <button onclick="testSensor(1, 75, 'Critical')">
-        Test S1
+    <h3>Demo Mode</h3>
+    <p>Simulate different drainage water conditions.</p>
+
+    <button onclick="testScenario('Normal')">
+        Test Normal
     </button>
 
-    <button onclick="testSensor(2, 75, 'Critical')">
-        Test S2
+    <button onclick="testScenario('Warning')">
+        Test Warning
     </button>
 
-    <button onclick="testSensor(3, 75, 'Critical')">
-        Test S3
+    <button onclick="testScenario('Critical')">
+        Test Critical
+    </button>
+
+    <button onclick="resetDemo()">
+        Reset Demo
     </button>
 
 </div>
+
             <div class="pipe-section">
              <h3>Drainage Pipe Water Monitoring</h3>
 
-          <div class="drainage-pipe" id="drainagePipe">
-          <div class="pipe-water" id="pipeWater"></div>
+         
+    <div class="drainage-pipe" id="drainagePipe">
 
-           <div class="pipe-sensor sensor-one">S1</div>
-           <div class="pipe-sensor sensor-two">S2</div>
-           <div class="pipe-sensor sensor-three">S3</div>
-         </div>
+    <!-- Three independent water-level sections -->
+    <div class="pipe-water water-one" id="water1"></div>
+    <div class="pipe-water water-two" id="water2"></div>
+    <div class="pipe-water water-three" id="water3"></div>
+
+    <!-- Three sensor positions -->
+    <div class="pipe-sensor sensor-one">S1</div>
+    <div class="pipe-sensor sensor-two">S2</div>
+    <div class="pipe-sensor sensor-three">S3</div>
+
+</div>
+
 
          <p id="pipeStatus">Water Level: Normal</p>
       </div>

@@ -124,29 +124,38 @@
                Three Sensor Monitoring
              </h2>
   
+
 <!-- DEMO MODE CONTROLS -->
 <div class="sensor-test-buttons">
 
     <h3>Demo Mode</h3>
     <p>Simulate different drainage water conditions.</p>
 
-    <button onclick="testScenario('Normal')">
-        Test Normal
-    </button>
+    <div class="demo-button-group">
 
-    <button onclick="testScenario('Warning')">
-        Test Warning
-    </button>
+        <button type="button" class="demo-btn normal-btn"
+            onclick="testScenario('Normal')">
+            Test Normal
+        </button>
 
-    <button onclick="testScenario('Critical')">
-        Test Critical
-    </button>
+        <button type="button" class="demo-btn warning-btn"
+            onclick="testScenario('Warning')">
+            Test Warning
+        </button>
 
-    <button onclick="resetDemo()">
-        Reset Demo
-    </button>
+        <button type="button" class="demo-btn critical-btn"
+            onclick="testScenario('Critical')">
+            Test Critical
+        </button>
 
+        <button type="button" class="demo-btn reset-btn"
+            onclick="resetDemo()">
+            Reset Demo
+        </button>
+
+    </div>
 </div>
+
 
             <div class="pipe-section">
              <h3>Drainage Pipe Water Monitoring</h3>

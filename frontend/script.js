@@ -143,6 +143,7 @@ function updateDashboardSensors() {
             pipeSensor.style.backgroundColor = color;
             pipeSensor.style.color = "white";
         }
+        updateMapStatus();
     });
 }
 function updatePipeStatus() {
@@ -157,6 +158,56 @@ function updatePipeStatus() {
     } else {
         pipeStatus.textContent = "Water Level: Normal";
     }
+}
+// UPDATE DASHBOARD SUMMARY CARDS
+
+function updateSummaryCards() {
+
+    const activeAlerts = sensors.filter(
+        sensor => sensor.status === "Warning" ||
+                  sensor.status === "Critical"
+    ).length;
+
+    const normalSensors = sensors.filter(
+        sensor => sensor.status === "Normal"
+    ).length;
+
+    document.getElementById("activeAlerts").textContent =
+        activeAlerts;
+
+    document.getElementById("normalSensors").textContent =
+        normalSensors;
+}
+// UPDATE DRAINAGE MAP SENSOR STATUS
+function updateMapStatus() {
+
+    sensors.forEach((sensor, index) => {
+
+        const marker = document.getElementById(`mapMarker${index + 1}`);
+        const statusText = document.getElementById(`mapStatus${index + 1}`);
+
+        if (!marker || !statusText) return;
+
+        const status = sensor.status.toLowerCase();
+
+        marker.classList.remove(
+            "normal-marker",
+            "warning-marker",
+            "critical-marker"
+        );
+
+        if (status === "normal") {
+            marker.classList.add("normal-marker");
+        } 
+        else if (status === "warning") {
+            marker.classList.add("warning-marker");
+        } 
+        else if (status === "critical") {
+            marker.classList.add("critical-marker");
+        }
+
+        statusText.textContent = sensor.status;
+    });
 }
 // DEMO MODE: Test all three sensors together
 
@@ -185,6 +236,7 @@ function testScenario(condition) {
     updateDashboardSensors();
     updateDrainagePipe();
     updatePipeStatus();
+    updateSummaryCards();
 }
 
 
@@ -206,6 +258,7 @@ function resetDemo() {
     updateDashboardSensors();
     updateDrainagePipe();
     updatePipeStatus();
+    updateSummaryCards();
 }
 
 

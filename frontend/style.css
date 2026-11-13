@@ -545,3 +545,96 @@ form textarea:focus {
     transform: translateY(-2px);
     filter: brightness(0.96);
 }
+/* DRAINAGE MONITORING NETWORK */
+
+.monitoring-layout {
+    background: #f8fafc;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.monitoring-layout h3 {
+    color: #0f2942;
+    margin-bottom: 8px;
+}
+
+.map-description {
+    color: #64748b;
+    margin-bottom: 35px;
+}
+
+.monitoring-route {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px 0;
+}
+
+.monitoring-point {
+    min-width: 100px;
+    text-align: center;
+}
+
+.point-marker {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
+
+.normal-marker {
+    background: #16a34a;
+}
+
+.warning-marker {
+    background: #f59e0b;
+}
+
+.critical-marker {
+    background: #dc2626;
+}
+
+.monitoring-point h4 {
+    color: #0f2942;
+    margin-bottom: 5px;
+}
+
+.monitoring-point span {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.route-line {
+    height: 4px;
+    width: 75px;
+    background: #94a3b8;
+    border-radius: 5px;
+}
+
+.map-note {
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 25px;
+}
+
+@media (max-width: 600px) {
+    .monitoring-route {
+        gap: 5px;
+    }
+
+    .route-line {
+        width: 25px;
+    }
+
+    .monitoring-point {
+        min-width: 75px;
+    }
+}

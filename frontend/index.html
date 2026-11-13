@@ -305,27 +305,38 @@
 
         <div class="monitoring-route">
 
-            <div class="monitoring-point">
-               <small id="mapStatus1">Normal</small>
-                <h4>Inlet</h4>
-                <span>Sensor 1</span>
-            </div>
+           
+<div class="monitoring-point">
 
-            <div class="route-line"></div>
+    <div class="point-marker normal-marker" id="mapMarker1">S1</div>
+    <h4>Inlet</h4>
+    <span>Sensor 1</span>
+    <small id="mapStatus1">Normal</small>
 
-            <div class="monitoring-point">
-               <small id="mapStatus2">Warning</small>
-                <h4>Middle</h4>
-                <span>Sensor 2</span>
-            </div>
+</div>
 
-            <div class="route-line"></div>
+<div class="route-line"></div>
 
-            <div class="monitoring-point">
-                <small id="mapStatus3">Critical</small>
-                <h4>Outlet</h4>
-                <span>Sensor 3</span>
-            </div>
+<div class="monitoring-point">
+
+    <div class="point-marker warning-marker" id="mapMarker2">S2</div>
+    <h4>Middle</h4>
+    <span>Sensor 2</span>
+    <small id="mapStatus2">Warning</small>
+
+</div>
+
+<div class="route-line"></div>
+
+<div class="monitoring-point">
+
+    <div class="point-marker critical-marker" id="mapMarker3">S3</div>
+    <h4>Outlet</h4>
+    <span>Sensor 3</span>
+    <small id="mapStatus3">Critical</small>
+
+</div>
+
 
         </div>
 
@@ -372,7 +383,7 @@
             <div class="section-header">
 
                 <h1>
-                    <i class="fa-solid fa-file-circle-exclamation"></i>
+                   <i class="fa-solid fa-file-pen"></i>
                     Public Grievance Portal
                 </h1>
 
@@ -429,9 +440,10 @@
                     <img id="photoPreview"
                           alt="Problem Photo Preview"
                           style="display: none; width: 200px;">
-                    <button type="button" id="removePhoto">
-                          Remove Photo
-                    </button>
+                  <button type="button" id="removePhoto" hidden>
+    <i class="fa-solid fa-trash"></i>
+    Remove Photo
+</button>
 
                     <button type="submit" class="submit-btn">
                         Submit Complaint

@@ -268,19 +268,31 @@ form textarea:focus {
     border-color: #0284c7;
 }
 
+/* SUBMIT COMPLAINT BUTTON */
+
 .submit-btn {
-    background: #0284c7;
+    background: linear-gradient(135deg, #0284c7, #0369a1);
     color: white;
     border: none;
-    padding: 13px;
-    border-radius: 7px;
+    padding: 14px 28px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 15px;
-    font-weight: bold;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(2, 132, 199, 0.2);
 }
 
 .submit-btn:hover {
-    background: #0369a1;
+    background: linear-gradient(135deg, #0369a1, #075985);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(2, 132, 199, 0.3);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
 }
 
 /* FOOTER */
@@ -636,5 +648,65 @@ form textarea:focus {
 
     .monitoring-point {
         min-width: 75px;
+    }
+}
+
+/* PROFESSIONAL DASHBOARD CARDS */
+
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    margin-top: 25px;
+}
+
+.dashboard-cards .card {
+    background: #ffffff;
+    padding: 25px 22px;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 12px rgba(15, 41, 66, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-cards .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(15, 41, 66, 0.12);
+}
+
+.dashboard-cards .card i {
+    font-size: 25px;
+    color: #2563eb;
+    margin-bottom: 15px;
+}
+
+.dashboard-cards .card h3 {
+    font-size: 15px;
+    color: #64748b;
+    margin-bottom: 10px;
+}
+
+.dashboard-cards .card h2 {
+    font-size: 30px;
+    color: #0f2942;
+    margin-bottom: 8px;
+}
+
+.dashboard-cards .card p {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* RESPONSIVE DESIGN */
+
+@media (max-width: 1000px) {
+    .dashboard-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 550px) {
+    .dashboard-cards {
+        grid-template-columns: 1fr;
     }
 }

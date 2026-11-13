@@ -143,8 +143,9 @@ function updateDashboardSensors() {
             pipeSensor.style.backgroundColor = color;
             pipeSensor.style.color = "white";
         }
-        updateMapStatus();
+       
     });
+    updateMapStatus();
 }
 function updatePipeStatus() {
     const pipeStatus = document.getElementById("pipeStatus");
@@ -338,6 +339,43 @@ if (grievanceForm) {
         );
 
         grievanceForm.reset();
+
+    });
+
+}
+// PHOTO UPLOAD AND REMOVE FUNCTIONALITY
+
+const problemPhotoInput = document.getElementById("problemPhoto");
+const photoPreview = document.getElementById("photoPreview");
+const removePhotoButton = document.getElementById("removePhoto");
+
+if (problemPhotoInput && photoPreview && removePhotoButton) {
+
+    problemPhotoInput.addEventListener("change", function () {
+
+        const file = this.files[0];
+
+        if (file) {
+            photoPreview.src = URL.createObjectURL(file);
+            photoPreview.style.display = "block";
+
+            // Show Remove Photo button
+            removePhotoButton.hidden = false;
+        }
+
+    });
+
+    removePhotoButton.addEventListener("click", function () {
+
+        // Clear selected photo
+        problemPhotoInput.value = "";
+
+        // Hide photo preview
+        photoPreview.src = "";
+        photoPreview.style.display = "none";
+
+        // Hide Remove Photo button
+        removePhotoButton.hidden = true;
 
     });
 

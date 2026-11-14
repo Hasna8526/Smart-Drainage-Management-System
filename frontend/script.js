@@ -1,4 +1,13 @@
+// SUPABASE CONNECTION
 
+const { createClient } = window.supabase;
+
+const supabaseUrl = "https://djvszoqsoxuuiurvxany.supabase.co";
+const supabaseKey = "sb_publishable_yKOlVPcS19bbDeTuRT9CNA_O1LHyTS6";
+
+const supabaseClient = createClient(supabaseUrl, supabaseKey);
+
+console.log("Supabase connected!");
 // ======================================
 // SMART DRAINAGE MONITORING SYSTEM
 // JavaScript - script.js
@@ -9,6 +18,7 @@
 
 
 // 1. SAMPLE SENSOR DATA
+
 
 const sensors = [
     {

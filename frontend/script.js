@@ -8,6 +8,72 @@ const supabaseKey = "sb_publishable_yKOlVPcS19bbDeTuRT9CNA_O1LHyTS6";
 const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
 console.log("Supabase connected!");
+
+// TEST: Read sensor data from Supabase
+
+// FETCH SENSOR READINGS FROM SUPABASE
+
+async function loadSensorReadings() {
+
+    // Get the three registered sensors
+    const { data: sensorData, error: sensorError } =
+        await supabaseClient
+            .from("sensor")
+            .select("*");
+
+    if (sensorError) {
+        console.error("Sensor error:", sensorError.message);
+        return;
+    }
+
+    // Get readings from the database
+    const { data: readingData, error: readingError } =
+        await supabaseClient
+            .from("sensor_readings")
+            .select("*")
+            .order("created_at", { ascending: false });
+
+    if (readingError) {
+        console.error("Reading error:", readingError.message);
+        return;
+    }
+
+    // Update existing sensor objects
+    sensorData.forEach(dbSensor => {
+
+        const sensor = sensors.find(
+            item => item.id === dbSensor.sensor_code
+        );
+
+        // Find the latest reading for this sensor
+        const reading = readingData.find(
+            item => item.sensor_id === dbSensor.id
+        );
+
+        if (sensor && reading) {
+
+            sensor.waterLevel = Number(reading.water_level_cm);
+            sensor.status = reading.status;
+            sensor.flowRate = "--";
+
+            sensor.lastPing = new Date(
+                reading.created_at
+            ).toLocaleString();
+        }
+    });
+
+    console.log("Live sensor data loaded:", sensors);
+
+    // Refresh dashboard
+    displaySensors();
+    updateDashboardSensors();
+    updatePipeStatus();
+    updateSummaryCards();
+    displayAlerts();
+    updateDrainagePipe();
+}
+
+
 // ======================================
 // SMART DRAINAGE MONITORING SYSTEM
 // JavaScript - script.js
@@ -89,7 +155,7 @@ function displaySensors() {
             <td>${sensor.id}</td>
             <td>${sensor.location}</td>
             <td>${sensor.waterLevel} cm</td>
-            <td>${sensor.flowRate} L/min</td>
+           <td>${sensor.flowRate === "--" ? "Not available" : sensor.flowRate + " L/min"}</td>
             <td>${sensor.status}</td>
             <td>${sensor.lastPing}</td>
         `;
@@ -419,13 +485,15 @@ function updateDrainagePipe() {
 }
 
 
-// Initial dashboard display
-displaySensors();
+// Your existing initialization code...
 
+displaySensors();
 displayAlerts();
 updateDashboardSensors();
 updateDrainagePipe();
- updatePipeStatus() ;
+updatePipeStatus();
 
+// Load actual readings from Supabase
+loadSensorReadings();
 
 console.log("Dashboard loaded!");

@@ -393,68 +393,81 @@ function displayAlerts() {
 
 // 5. PUBLIC GRIEVANCE FORM
 
+
+
+
 const grievanceForm = document.getElementById("grievanceForm");
 
 if (grievanceForm) {
-
-    grievanceForm.addEventListener("submit", function(event) {
-
+    grievanceForm.addEventListener("submit", async function(event) {
         event.preventDefault();
 
-        const name = document.getElementById("citizenName").value;
-
+        const name = document.getElementById("citizenName").value.trim();
+        const email = document.getElementById("citizenEmail").value.trim();
         const problem = document.getElementById("problemType").value;
+        const location = document.getElementById("location").value.trim();
+        const description = document.getElementById("description").value.trim();
 
-        const location = document.getElementById("location").value;
+        const photoFile = document.getElementById("problemPhoto").files[0];
 
-        alert(
-            "Complaint submitted successfully!\n\n" +
-            "Name: " + name +
-            "\nProblem: " + problem +
-            "\nLocation: " + location
-        );
+        let photoPath = null;
 
-        grievanceForm.reset();
+        try {
+            // Upload photo to Supabase Storage
+            if (photoFile) {
+                if (photoFile.size > 5 * 1024 * 1024) {
+                    alert("Photo must be smaller than 5 MB.");
+                    return;
+                }
 
-    });
+                if (!["image/jpeg", "image/png"].includes(photoFile.type)) {
+                    alert("Please upload a JPG or PNG image.");
+                    return;
+                }
 
-}
-// PHOTO UPLOAD AND REMOVE FUNCTIONALITY
+                const safeFileName = photoFile.name.replace(
+                    /[^a-zA-Z0-9._-]/g, "_"
+                );
 
-const problemPhotoInput = document.getElementById("problemPhoto");
-const photoPreview = document.getElementById("photoPreview");
-const removePhotoButton = document.getElementById("removePhoto");
+                const filePath = Date.now() + "_" + safeFileName;
 
-if (problemPhotoInput && photoPreview && removePhotoButton) {
+                const { data: uploadData, error: uploadError } =
+                    await supabaseClient.storage
+                        .from("complaint-photos")
+                        .upload(filePath, photoFile);
 
-    problemPhotoInput.addEventListener("change", function () {
+                if (uploadError) throw uploadError;
 
-        const file = this.files[0];
+                photoPath = uploadData.path;
+            }
 
-        if (file) {
-            photoPreview.src = URL.createObjectURL(file);
-            photoPreview.style.display = "block";
+            // Save complaint details in database
+            const { error: insertError } = await supabaseClient
+                .from("complaints")
+                .insert([{
+                    citizen_name: name,
+                    citizen_email: email,
+                    problem_type: problem,
+                    location: location,
+                    description: description,
+                    photo_path: photoPath
+                }]);
 
-            // Show Remove Photo button
-            removePhotoButton.hidden = false;
+            if (insertError) throw insertError;
+
+            alert("Complaint and photo submitted successfully!");
+
+            grievanceForm.reset();
+
+            document.getElementById("photoPreview").src = "";
+            document.getElementById("photoPreview").style.display = "none";
+            document.getElementById("removePhoto").hidden = true;
+
+        } catch (error) {
+            console.error("Complaint submission error:", error);
+            alert("Submission failed: " + error.message);
         }
-
     });
-
-    removePhotoButton.addEventListener("click", function () {
-
-        // Clear selected photo
-        problemPhotoInput.value = "";
-
-        // Hide photo preview
-        photoPreview.src = "";
-        photoPreview.style.display = "none";
-
-        // Hide Remove Photo button
-        removePhotoButton.hidden = true;
-
-    });
-
 }
 
 // 6. UPDATE THREE PIPE WATER LEVELS

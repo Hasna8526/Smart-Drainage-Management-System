@@ -64,6 +64,10 @@
                 <i class="fa-solid fa-file-circle-exclamation"></i>
                 Public Grievance
             </a>
+            <a href="#myComplaints" id="complaintsNav">
+    <i class="fa-solid fa-clipboard-list"></i>
+    <span id="complaintsNavText">My Complaints</span>
+</a>
         </nav>
 
     </aside>
@@ -454,6 +458,46 @@
             </div>
 
         </section>
+
+<!-- MY COMPLAINTS SECTION -->
+<section id="myComplaints" class="section">
+
+    <div class="section-header">
+        <h1>
+            <i class="fa-solid fa-clipboard-list"></i>
+            My Complaints
+        </h1>
+        <p>Track the complaints you have submitted.</p>
+    </div>
+
+    <div class="content-box">
+
+        <div class="table-container">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Complaint ID</th>
+                        <th>Problem Type</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="myComplaintsBody">
+                    <tr>
+                        <td colspan="5">Loading your complaints...</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
 
 
     </main>

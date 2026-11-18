@@ -129,6 +129,43 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
             window.location.href = "index.html";
         }
     }
+    // Admin Login
+else if (selectedRole === "admin") {
+
+    const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+    if (error) {
+        alert(error.message);
+        return;
+    }
+
+    // Check whether this account is an approved admin
+    const { data: adminRecord, error: roleError } =
+        await supabaseClient
+            .from("admin_users")
+            .select("user_id")
+            .eq("user_id", data.user.id)
+            .maybeSingle();
+    console.log("Admin User ID:", data.user.id);
+console.log("Admin Record:", adminRecord);
+console.log("Role Error:", roleError);
+
+    if (roleError || !adminRecord) {
+
+        await supabaseClient.auth.signOut();
+
+        alert("Access denied! This account is not an authorized administrator.");
+        return;
+    }
+
+    alert("Admin Login Successful!");
+
+window.location.href = "index.html";
+}
 });
 
 // Forgot Password
@@ -142,7 +179,9 @@ document.getElementById("forgotPassword").addEventListener("click", async functi
         return;
     }
 
-    const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email);
+    const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+    redirectTo: "http://127.0.0.1:5500/frontend/reset-password.html"
+});
 
     if (error) {
         alert(error.message);

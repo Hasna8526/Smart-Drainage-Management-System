@@ -6,6 +6,46 @@ const supabaseUrl = "https://djvszoqsoxuuiurvxany.supabase.co";
 const supabaseKey = "sb_publishable_yKOlVPcS19bbDeTuRT9CNA_O1LHyTS6";
 
 const supabaseClient = createClient(supabaseUrl, supabaseKey);
+// CHECK USER ROLE
+async function checkUserRole() {
+
+    const { data: { user }, error } =
+        await supabaseClient.auth.getUser();
+
+    if (error || !user) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    // Check whether the logged-in user is an admin
+    const { data: adminRecord, error: roleError } =
+        await supabaseClient
+            .from("admin_users")
+            .select("user_id")
+            .eq("user_id", user.id)
+            .maybeSingle();
+
+    const complaintsNavText =
+        document.getElementById("complaintsNavText");
+
+    const complaintsNav =
+        document.getElementById("complaintsNav");
+
+    if (!complaintsNavText || !complaintsNav) return;
+
+    if (!roleError && adminRecord) {
+
+        complaintsNavText.textContent = "All Citizen Complaints";
+        complaintsNav.href = "#myComplaints";
+
+    } else {
+
+        complaintsNavText.textContent = "My Complaints";
+        complaintsNav.href = "#myComplaints";
+
+    }
+
+}
 
 console.log("Supabase connected!");
 
@@ -401,6 +441,10 @@ const grievanceForm = document.getElementById("grievanceForm");
 if (grievanceForm) {
     grievanceForm.addEventListener("submit", async function(event) {
         event.preventDefault();
+               // Check whether a citizen is logged in
+const { data: { user } } =
+    await supabaseClient.auth.getUser();
+
 
         const name = document.getElementById("citizenName").value.trim();
         const email = document.getElementById("citizenEmail").value.trim();
@@ -442,16 +486,17 @@ if (grievanceForm) {
             }
 
             // Save complaint details in database
-            const { error: insertError } = await supabaseClient
-                .from("complaints")
-                .insert([{
-                    citizen_name: name,
-                    citizen_email: email,
-                    problem_type: problem,
-                    location: location,
-                    description: description,
-                    photo_path: photoPath
-                }]);
+const { error: insertError } = await supabaseClient
+    .from("complaints")
+    .insert([{
+        user_id: user ? user.id : null,
+        citizen_name: name,
+        citizen_email: email,
+        problem_type: problem,
+        location: location,
+        description: description,
+        photo_path: photoPath
+    }]);
 
             if (insertError) throw insertError;
 
@@ -506,7 +551,108 @@ updateDashboardSensors();
 updateDrainagePipe();
 updatePipeStatus();
 
+
 // Load actual readings from Supabase
 loadSensorReadings();
+loadMyComplaints();
+checkUserRole();
+// 7. LOAD MY COMPLAINTS
+
+
+async function loadMyComplaints() {
+
+    const tbody = document.getElementById("myComplaintsBody");
+
+    if (!tbody) return;
+
+    // Get logged-in user
+    const { data: { user }, error: userError } =
+        await supabaseClient.auth.getUser();
+
+    if (userError || !user) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5">Please log in to view complaints.</td>
+            </tr>
+        `;
+        return;
+    }
+
+    // Check whether the user is an admin
+    const { data: adminRecord, error: roleError } =
+        await supabaseClient
+            .from("admin_users")
+            .select("user_id")
+            .eq("user_id", user.id)
+            .maybeSingle();
+
+    if (roleError) {
+        console.error("Role checking error:", roleError.message);
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5">Unable to verify user role.</td>
+            </tr>
+        `;
+        return;
+    }
+
+    // Start fetching complaints
+    let query = supabaseClient
+        .from("complaints")
+        .select("id, problem_type, location, created_at, status");
+
+    // Citizens see only their own complaints.
+    // Admins see all complaints.
+    if (!adminRecord) {
+        query = query.eq("user_id", user.id);
+    }
+
+    const { data, error } = await query
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        console.error("Complaint loading error:", error.message);
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5">Unable to load complaints.</td>
+            </tr>
+        `;
+        return;
+    }
+
+    if (!data || data.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5">No complaints submitted yet.</td>
+            </tr>
+        `;
+        return;
+    }
+
+    tbody.innerHTML = "";
+
+    data.forEach(complaint => {
+
+        const row = document.createElement("tr");
+
+        const values = [
+            complaint.id,
+            complaint.problem_type,
+            complaint.location,
+            new Date(complaint.created_at).toLocaleDateString(),
+            complaint.status || "Pending"
+        ];
+
+        values.forEach(value => {
+            const cell = document.createElement("td");
+            cell.textContent = value;
+            row.appendChild(cell);
+        });
+
+        tbody.appendChild(row);
+    });
+}
+
 
 console.log("Dashboard loaded!");

@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Drainage Management System - Login</title>
+
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+    <div class="login-container">
+
+       
+<div class="logo">
+    <div class="brand-heading">
+        <svg viewBox="0 0 48 48" class="brand-icon">
+            <path d="M5 17 Q13 9 21 17 T37 17 T45 17"
+                fill="none" stroke="#0785bd" stroke-width="4"
+                stroke-linecap="round"/>
+            <path d="M5 27 Q13 19 21 27 T37 27 T45 27"
+                fill="none" stroke="#0785bd" stroke-width="4"
+                stroke-linecap="round"/>
+            <path d="M5 37 Q13 29 21 37 T37 37 T45 37"
+                fill="none" stroke="#0785bd" stroke-width="4"
+                stroke-linecap="round"/>
+        </svg>
+        <h1>Smart Drainage</h1>
+    </div>
+    <p>Monitoring & Public Grievance Portal</p>
+    <p class="tagline">Smarter Monitoring. Safer Communities.</p>
+</div>
+
+
+        <h2>Welcome!</h2>
+        <p class="subtitle">Choose your login type to continue</p>
+
+        <div class="role-container">
+
+            <div class="role-card" onclick="selectRole('citizen')">
+             <div class="role-icon">
+    <svg viewBox="0 0 24 24" width="42" height="42"
+         fill="none" stroke="currentColor" stroke-width="1.7">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>
+    </svg>
+</div>
+                <h3>Citizen</h3>
+                <p>Report drainage issues and track complaints.</p>
+                <button>Continue as Citizen</button>
+            </div>
+
+            <div class="role-card" onclick="selectRole('admin')">
+              <div class="role-icon">
+    <svg viewBox="0 0 24 24" width="42" height="42"
+         fill="none" stroke="currentColor" stroke-width="1.7">
+        <path d="M12 2 20 5v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/>
+        <path d="m9 12 2 2 4-4"/>
+    </svg>
+</div>
+                <h3>Admin</h3>
+                <p>Monitor drainage and manage complaints.</p>
+                <button>Continue as Admin</button>
+            </div>
+
+        </div>
+
+<div class="form-container" id="formContainer" style="display: none;">
+
+    <h2 id="formTitle">Citizen Login</h2>
+    <p id="formSubtitle">Enter your details to continue</p>
+
+    <form id="loginForm">
+
+        <input
+            type="text"
+            id="citizenName"
+            placeholder="Full Name"
+            style="display: none;"
+        >
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Email Address"
+            required
+        >
+
+       <input
+    type="password"
+    id="password"
+    placeholder="Password"
+    required
+>
+
+<a href="#" id="forgotPassword">Forgot Password?</a>
+
+        <button type="submit" id="submitButton">
+            Login
+        </button>
+
+    </form>
+
+    <p id="registerText">
+        New citizen?
+        <a href="#" id="registerLink">Create an account</a>
+    </p>
+
+    <button type="button" id="backButton">
+        Back
+    </button>
+
+</div>
+
+
+        <p class="footer">Smart Drainage Management System</p>
+
+    </div>
+
+  <!-- Supabase Library -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Login JavaScript -->
+<script src="login.js"></script>
+
+</body>
+</html>

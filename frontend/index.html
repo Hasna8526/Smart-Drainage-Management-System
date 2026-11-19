@@ -459,15 +459,19 @@
 
         </section>
 
-<!-- MY COMPLAINTS SECTION -->
+
+<!-- COMPLAINT MANAGEMENT SECTION -->
 <section id="myComplaints" class="section">
 
     <div class="section-header">
-        <h1>
+        <h1 id="complaintsTitle">
             <i class="fa-solid fa-clipboard-list"></i>
             My Complaints
         </h1>
-        <p>Track the complaints you have submitted.</p>
+
+        <p id="complaintsDescription">
+            Track the complaints you have submitted.
+        </p>
     </div>
 
     <div class="content-box">
@@ -476,18 +480,24 @@
 
             <table>
                 <thead>
-                    <tr>
-                        <th>Complaint ID</th>
-                        <th>Problem Type</th>
-                        <th>Location</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
+    <tr>
+        <th>Complaint ID</th>
+       <th id="citizenNameHeader" style="display: none;">
+    Citizen Name
+</th>
+        <th>Problem Type</th>
+        <th>Location</th>
+        <th>Date Submitted</th>
+        <th>Status</th>
+        <th id="complaintActionHeader" style="display: none;">
+            Action
+        </th>
+    </tr>
+</thead>
 
                 <tbody id="myComplaintsBody">
                     <tr>
-                        <td colspan="5">Loading your complaints...</td>
+                        <td colspan="5">Loading complaints...</td>
                     </tr>
                 </tbody>
             </table>
@@ -497,6 +507,7 @@
     </div>
 
 </section>
+
 
 
 

@@ -33,17 +33,57 @@ async function checkUserRole() {
 
     if (!complaintsNavText || !complaintsNav) return;
 
-    if (!roleError && adminRecord) {
+const complaintsTitle =
+    document.getElementById("complaintsTitle");
 
-        complaintsNavText.textContent = "All Citizen Complaints";
-        complaintsNav.href = "#myComplaints";
+const complaintsDescription =
+    document.getElementById("complaintsDescription");
 
-    } else {
+if (!roleError && adminRecord) {
 
-        complaintsNavText.textContent = "My Complaints";
-        complaintsNav.href = "#myComplaints";
+    // ADMIN VIEW
+    // Hide complaint submission form for admin
+document.getElementById("grievance").style.display = "none";
 
-    }
+// Hide Public Grievance navigation link
+const grievanceNav = document.querySelector('a[href="#grievance"]');
+
+if (grievanceNav) {
+    grievanceNav.style.display = "none";
+}
+
+    complaintsNavText.textContent = "All Citizen Complaints";
+
+
+    complaintsTitle.innerHTML =
+        '<i class="fa-solid fa-clipboard-list"></i> Citizen Complaint Management';
+
+    complaintsDescription.textContent =
+        "Review and manage all complaints submitted by citizens.";
+
+} else {
+
+    // CITIZEN VIEW
+    // Show complaint submission form for citizens
+document.getElementById("grievance").style.display = "";
+
+// Show Public Grievance navigation link
+const grievanceNav = document.querySelector('a[href="#grievance"]');
+
+if (grievanceNav) {
+    grievanceNav.style.display = "";
+}
+    complaintsNavText.textContent = "My Complaints";
+
+    complaintsTitle.innerHTML =
+        '<i class="fa-solid fa-clipboard-list"></i> My Complaints';
+
+    complaintsDescription.textContent =
+        "Track the complaints you have submitted.";
+
+}
+
+complaintsNav.href = "#myComplaints";
 
 }
 
@@ -559,26 +599,27 @@ checkUserRole();
 // 7. LOAD MY COMPLAINTS
 
 
+
 async function loadMyComplaints() {
 
     const tbody = document.getElementById("myComplaintsBody");
 
     if (!tbody) return;
 
-    // Get logged-in user
+    // 1. Get logged-in user
     const { data: { user }, error: userError } =
         await supabaseClient.auth.getUser();
 
     if (userError || !user) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="5">Please log in to view complaints.</td>
+                <td colspan="6">Please log in to view complaints.</td>
             </tr>
         `;
         return;
     }
 
-    // Check whether the user is an admin
+    // 2. Check whether the user is an admin
     const { data: adminRecord, error: roleError } =
         await supabaseClient
             .from("admin_users")
@@ -588,21 +629,32 @@ async function loadMyComplaints() {
 
     if (roleError) {
         console.error("Role checking error:", roleError.message);
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="5">Unable to verify user role.</td>
-            </tr>
-        `;
         return;
     }
 
-    // Start fetching complaints
+    // 3. Show Action column only for admins
+    const actionHeader =
+        document.getElementById("complaintActionHeader");
+
+    if (actionHeader) {
+        actionHeader.style.display =
+            adminRecord ? "table-cell" : "none";
+    }
+    const citizenNameHeader =
+    document.getElementById("citizenNameHeader");
+
+if (citizenNameHeader) {
+    citizenNameHeader.style.display =
+        adminRecord ? "table-cell" : "none";
+}
+
+    // 4. Fetch complaints
     let query = supabaseClient
         .from("complaints")
-        .select("id, problem_type, location, created_at, status");
+.select("id, citizen_name, problem_type, location, created_at, status");
 
-    // Citizens see only their own complaints.
-    // Admins see all complaints.
+    // Citizens see only their own complaints
+    // Admins see all complaints
     if (!adminRecord) {
         query = query.eq("user_id", user.id);
     }
@@ -612,19 +664,19 @@ async function loadMyComplaints() {
 
     if (error) {
         console.error("Complaint loading error:", error.message);
-
         tbody.innerHTML = `
             <tr>
-                <td colspan="5">Unable to load complaints.</td>
+                <td colspan="6">Unable to load complaints.</td>
             </tr>
         `;
         return;
     }
 
+    // 5. Check whether complaints exist
     if (!data || data.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="5">No complaints submitted yet.</td>
+                <td colspan="6">No complaints submitted yet.</td>
             </tr>
         `;
         return;
@@ -632,27 +684,77 @@ async function loadMyComplaints() {
 
     tbody.innerHTML = "";
 
+    // 6. Display complaints
     data.forEach(complaint => {
 
         const row = document.createElement("tr");
 
-        const values = [
-            complaint.id,
-            complaint.problem_type,
-            complaint.location,
-            new Date(complaint.created_at).toLocaleDateString(),
-            complaint.status || "Pending"
-        ];
-
+const values = [
+    complaint.id,
+    ...(adminRecord ? [complaint.citizen_name || "—"] : []),
+    complaint.problem_type,
+    complaint.location,
+    new Date(complaint.created_at).toLocaleDateString(),
+    complaint.status || "Pending"
+];
         values.forEach(value => {
             const cell = document.createElement("td");
             cell.textContent = value;
             row.appendChild(cell);
         });
 
+        // 7. Admin-only status dropdown
+        if (adminRecord) {
+
+            const actionCell = document.createElement("td");
+            const statusSelect = document.createElement("select");
+
+            ["Pending", "In Progress", "Completed"].forEach(status => {
+
+                const option = document.createElement("option");
+                option.value = status;
+                option.textContent = status;
+
+                if ((complaint.status || "Pending") === status) {
+                    option.selected = true;
+                }
+
+                statusSelect.appendChild(option);
+            });
+
+            statusSelect.addEventListener("change", async function() {
+
+                const newStatus = this.value;
+                this.disabled = true;
+
+                const { error } = await supabaseClient
+                    .from("complaints")
+                    .update({ status: newStatus })
+                    .eq("id", complaint.id);
+
+                if (error) {
+                    alert("Unable to update complaint status.");
+                    console.error("Status update error:", error);
+                    await loadMyComplaints();
+                    return;
+                }
+
+                alert("Complaint status updated successfully!");
+
+                await loadMyComplaints();
+
+            });
+
+            actionCell.appendChild(statusSelect);
+            row.appendChild(actionCell);
+        }
+
         tbody.appendChild(row);
+
     });
+
 }
+
 
 
 console.log("Dashboard loaded!");

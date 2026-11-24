@@ -407,7 +407,7 @@ form textarea:focus {
 .pipe-water {
     position: absolute;
     bottom: 0;
-    width: 33.3333%;
+    width: 50%;
     height: 10%;
     transition: height 0.6s ease;
     z-index: 1;
@@ -416,21 +416,14 @@ form textarea:focus {
 /* S1 - INLET */
 .water-one {
     left: 0;
-    background: #16a34a;
+    background: #2196f3;
 }
 
 /* S2 - MIDDLE */
 .water-two {
-    left: 33.3333%;
-    background: #e99a23;
+    left: 50%;
+    background: #42a5f5;
 }
-
-/* S3 - OUTLET */
-.water-three {
-    left: 66.6666%;
-    background: #dc4545;
-}
-
 /* THREE SENSORS */
 
 .pipe-sensor {
@@ -460,15 +453,9 @@ form textarea:focus {
 }
 
 .sensor-two {
-    left: 45%;
+    left: 50%;
     background-color: orange !important;
 }
-
-.sensor-three {
-    right: 10%;
-    background-color: red !important;
-}
-
 /* SENSOR STATUS COLOURS */
 
 .pipe-sensor.normal {

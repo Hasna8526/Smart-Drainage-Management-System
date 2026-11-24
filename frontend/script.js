@@ -132,10 +132,16 @@ async function loadSensorReadings() {
 
         if (sensor && reading) {
 
-            sensor.waterLevel = Number(reading.water_level_cm);
-            sensor.status = reading.status;
-            sensor.flowRate = "--";
+           sensor.waterLevel = Number(reading.water_level_cm);
 
+const rawStatus = String(reading.status || "NORMAL").toUpperCase();
+
+sensor.status =
+    rawStatus === "CRITICAL" ? "Critical" :
+    rawStatus === "WARNING" ? "Warning" :
+    "Normal";
+
+sensor.flowRate = "--";
             sensor.lastPing = new Date(
                 reading.created_at
             ).toLocaleString();
@@ -183,14 +189,6 @@ const sensors = [
         status: "Warning",
         lastPing: "Just now"
     },
-    {
-        id: "S003",
-        location: "Outlet Position",
-        waterLevel: 20,
-        flowRate: 5,
-        status: "Critical",
-        lastPing: "Just now"
-    }
 ];
 function updateSensorCards() {
     sensors.forEach((sensor, index) => {
@@ -254,8 +252,7 @@ function updateDashboardSensors() {
 
     const pipeClasses = [
         "sensor-one",
-        "sensor-two",
-        "sensor-three"
+        "sensor-two"
     ];
 
     sensors.forEach((sensor, index) => {
@@ -373,13 +370,13 @@ function testScenario(condition) {
     let levels = [];
 
     if (condition === "Normal") {
-        levels = [5, 6, 7];
+        levels = [5, 6];
     } 
     else if (condition === "Warning") {
-        levels = [12, 13, 14];
+        levels = [12, 13];
     } 
     else if (condition === "Critical") {
-        levels = [20, 22, 25];
+        levels = [20, 22];
     }
 
     sensors.forEach((sensor, index) => {
@@ -401,8 +398,8 @@ function testScenario(condition) {
 
 function resetDemo() {
 
-    const originalLevels = [5, 12, 20];
-    const originalStatuses = ["Normal", "Warning", "Critical"];
+    const originalLevels = [5, 12];
+    const originalStatuses = ["Normal", "Warning"];
 
     sensors.forEach((sensor, index) => {
         sensor.waterLevel = originalLevels[index];
@@ -430,10 +427,10 @@ function displayAlerts() {
 
     alertsContainer.innerHTML = "";
 
-    const problemSensors = sensors.filter(
-        sensor => sensor.status !== "Normal"
-    );
-
+const problemSensors = sensors.filter(
+    sensor => sensor.status === "Warning" ||
+              sensor.status === "Critical"
+);
     if (problemSensors.length === 0) {
 
         alertsContainer.innerHTML = "<p>No active alerts.</p>";
@@ -555,12 +552,12 @@ const { error: insertError } = await supabaseClient
     });
 }
 
-// 6. UPDATE THREE PIPE WATER LEVELS
+// 6. UPDATE TWO PIPE WATER LEVELS
 
 function updateDrainagePipe() {
 
     // Maximum demonstration water height inside the pipe
-    const maxPipeHeight = 30;
+    const maxPipeHeight = 7.5;
 
     sensors.forEach((sensor, index) => {
 

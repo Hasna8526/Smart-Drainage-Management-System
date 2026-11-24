@@ -92,14 +92,14 @@
                 <div class="card">
                     <i class="fa-solid fa-microchip"></i>
                     <h3>Total Sensors</h3>
-                    <h2 id="totalSensors">3</h2>
+                    <h2 id="totalSensors">2</h2>
                     <p>Installed sensors</p>
                 </div>
 
               <div class="card">
                   <i class="fa-solid fa-wave-square"></i>
                   <h3>Monitoring Points</h3>
-                  <h2>3</h2>
+                  <h2>2</h2>
                   <p>Ultrasonic sensor positions</p>
               </div>
 
@@ -170,13 +170,10 @@
     <!-- Three independent water-level sections -->
     <div class="pipe-water water-one" id="water1"></div>
     <div class="pipe-water water-two" id="water2"></div>
-    <div class="pipe-water water-three" id="water3"></div>
 
     <!-- Three sensor positions -->
     <div class="pipe-sensor sensor-one">S1</div>
     <div class="pipe-sensor sensor-two">S2</div>
-    <div class="pipe-sensor sensor-three">S3</div>
-
 </div>
 
 
@@ -187,9 +184,9 @@
 
         <!-- SENSOR 1 -->
         <div class="sensor-card">
-            <h3>Ultrasonic Sensor 1</h3>
-            <h1 id="sensor1Distance">-- cm</h1>
-            <p>Inlet Position</p>
+            <h3>Ultrasonic Sensor 1</h3><h1 id="sensor1Distance">-- cm</h1>
+<p>Water Height – Inlet Position</p>
+           
             <div class="sensor-indicator">
                 <span id="sensor1Status" class="status-indicator status-waiting"></span>
                 <span id="sensor1Text">Waiting for data</span>
@@ -207,21 +204,10 @@
             </div>
         </div>
 
-        <!-- SENSOR 3 -->
-        <div class="sensor-card">
-            <h3>Ultrasonic Sensor 3</h3>
-            <h1 id="sensor3Distance">-- cm</h1>
-            <p>Outlet Position</p>
-            <div class="sensor-indicator">
-                <span id="sensor3Status" class="status-indicator status-waiting"></span>
-                <span id="sensor3Text">Waiting for data</span>
-            </div>
-        </div>
-
     </div>
 
     <p class="note">
-        Three ultrasonic sensors monitor water distance
+        Two ultrasonic sensors monitor water distance
         at different positions inside the drainage model.
     </p>
 
@@ -327,17 +313,6 @@
     <h4>Middle</h4>
     <span>Sensor 2</span>
     <small id="mapStatus2">Warning</small>
-
-</div>
-
-<div class="route-line"></div>
-
-<div class="monitoring-point">
-
-    <div class="point-marker critical-marker" id="mapMarker3">S3</div>
-    <h4>Outlet</h4>
-    <span>Sensor 3</span>
-    <small id="mapStatus3">Critical</small>
 
 </div>
 

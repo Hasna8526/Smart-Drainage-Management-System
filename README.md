@@ -31,8 +31,8 @@ Push access to this repository is closed at the deadline. Anything not pushed by
 ## Getting Started
 
 ```bash
-git clone https://github.com/Embed-Club/team-tech-titans.git
-cd team-tech-titans
+git clone https://github.com/Embed-Club/Embers-02-TechTitans.git
+cd Embers-02-TechTitans
 ```
 
 Commit and push regularly. Your commit history is how progress is tracked.
